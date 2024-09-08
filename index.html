@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>anafora / αναφορά - CSV and VTT Search</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/png" href="images/purple.png">
+    <style>
+        /* ... existing styles ... */
+        #wordCloud {
+            margin-top: 20px;
+            text-align: center;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="images/purple.png" alt="Purple background" class="header-image">
+        <h1>anafora / αναφορά / reference</h1>
+    </header>
+    <p id="motto">"light to the darkness"</p>
+    <main>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Enter keyword...">
+            <button id="searchButton">Search</button>
+        </div>
+        <div id="results"></div>
+        <div id="vtt-list">
+            <h3>Available Searchable Files:</h3>
+            <ul id="vtt-files"></ul>
+        </div>
+        
+        <div id="wordCloud"></div>
+        <div id="videoList"></div>
+    </main>
+    <footer>
+        <p>&copy; 2024 the dead girl</p>
+    </footer>
+    <script src="js/script.js"></script>
+</body>
+</html>

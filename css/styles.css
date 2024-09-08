@@ -1,0 +1,108 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+header, main, footer {
+    padding: 20px;
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
+}
+
+.search-container {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#searchInput {
+    padding: 5px;
+    width: 70%;
+    max-width: 300px;
+}
+
+#searchButton {
+    padding: 5px 10px;
+}
+
+#results {
+    border: 1px solid #ccc;
+    padding: 10px;
+    min-height: 100px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.main-image {
+    max-width: 100%;
+    height: auto;
+}
+
+header {
+    text-align: center;
+    color: white;
+    margin-bottom: 10px;
+    position: relative;
+    max-width: 400px;
+}
+
+.header-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-width: 400px;
+}
+
+header h1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+    width: 90%;
+    box-sizing: border-box;
+}
+
+#motto {
+    font-style: italic;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+file-results {
+    margin-bottom: 20px;
+}
+
+file-results h3 {
+    margin-bottom: 10px;
+    color: #333;
+    text-align: center;
+}
+
+file-results p {
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+mark {
+    background-color: yellow;
+    padding: 2px;
+}
+
+footer {
+    text-align: center;
+    margin-top: auto;
+}
