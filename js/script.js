@@ -18,7 +18,7 @@ async function displayVTTFiles() {
     const vttFilesList = document.getElementById('vtt-files');
     vttFilesList.innerHTML = '';
     
-    videoList.forEach(video => {
+    videoList.forEach((video, index) => {
         if (video.name) {
             const li = document.createElement('li');
             li.textContent = video.name;

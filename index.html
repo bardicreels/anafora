@@ -80,18 +80,29 @@
             cursor: pointer;
         }
 
-        #vtt-list, #results, .video-result {
+        #vtt-list {
             background-color: #f9f3e3;
             border: 1px solid #8b7d6b;
             padding: 15px;
             margin-top: 20px;
-            border-radius: 10px; /* Rounded corners for containers */
+            border-radius: 10px;
+            max-height: 300px; /* Set a maximum height */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        #vtt-files {
+            margin: 0;
+            padding: 0;
         }
 
         #vtt-files li {
             list-style-type: none;
             padding: 5px 0;
             border-bottom: 1px dotted #8b7d6b;
+        }
+
+        #vtt-files li:last-child {
+            border-bottom: none; /* Remove border from last item */
         }
 
         a {
@@ -142,6 +153,10 @@
     </header>
     <p id="motto"><i>"light on the darkness"</i></p>
     <main>
+        <!-- New section for chat.html content -->
+        <section id="chat-section">
+            <div id="chat-container"></div>
+        </section>
 
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="Enter keyword...">
@@ -155,9 +170,7 @@
             <div id="column">
                 <div id="vtt-list">
                     <h3>Searchable Videos to date:</h3>
-                    <ul id="vtt-files"></ul>
-
-                    
+                    <ol id="vtt-files"></ol>
                 </div> 
             </div>
 
@@ -167,6 +180,16 @@
     <footer>
         <p>&copy; 2024 the dead girl</p>
     </footer>
+    
     <script src="js/script.js"></script>
+    <!-- Add a new script to load chat.html content -->
+    <script>
+        fetch('chat.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('chat-container').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading chat.html:', error));
+    </script>
 </body>
 </html>
