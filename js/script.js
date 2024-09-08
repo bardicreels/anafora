@@ -1,4 +1,5 @@
-let videoList = [];
+let videoList = {};
+let searchQueries = [];
 
 async function loadVideoList() {
     try {
@@ -7,20 +8,9 @@ async function loadVideoList() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         videoList = await response.json();
-        displaySearchableFiles();
     } catch (error) {
         console.error('Error loading video list:', error);
     }
-}
-
-function displaySearchableFiles() {
-    const vttFilesList = document.getElementById('vtt-files');
-    vttFilesList.innerHTML = '';
-    videoList.forEach(video => {
-        const li = document.createElement('li');
-        li.textContent = video.name;
-        vttFilesList.appendChild(li);
-    });
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
@@ -54,14 +44,27 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     async function searchFiles(keyword) {
         const results = [];
-        for (const video of videoList) {
-            try {
-                const content = await fetchFile(`data/${video.vtt}`);
-                const matches = searchContent(content, keyword, video.vtt);
-                results.push(...matches);
-            } catch (error) {
-                console.error(`Error searching file ${video.vtt}:`, error);
+        try {
+            const response = await fetch('data/');
+            const html = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const links = doc.querySelectorAll('a');
+            const vttFiles = Array.from(links)
+                .map(link => link.href)
+                .filter(href => href.endsWith('.vtt'));
+
+            for (const file of vttFiles) {
+                try {
+                    const content = await fetchFile(file);
+                    const matches = searchContent(content, keyword, file);
+                    results.push(...matches);
+                } catch (error) {
+                    console.error(`Error searching file ${file}:`, error);
+                }
             }
+        } catch (error) {
+            console.error('Error listing directory:', error);
         }
         return results;
     }
@@ -108,7 +111,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                         <h3>${videoName}</h3>
                         ${fileResults.map(result => `
                             <p>
-                                <strong>Time:</strong> 
+                            
                                 <a href="${getYoutubeLink(file, result.timecode)}" target="_blank">
                                     ${result.timecode}
                                 </a><br>
@@ -122,6 +125,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     function getYoutubeLink(filename, timecode) {
+        const videoId = filename.split('-').pop().split('.')[0]; // Extract video ID from the end of the filename
         const videoInfo = videoList.find(video => video.vtt === filename);
         if (!videoInfo) {
             console.error(`Video info not found for ${filename}`);
