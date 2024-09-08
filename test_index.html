@@ -3,49 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>anafora / αναφορά - CSV and VTT Search</title>
+    <title>αναφορά</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" type="image/png" href="images/purple.png">
     <style>
-        /* ... existing styles ... */
+        body {
+            background-color: #f4e6c0; /* Light parchment color */
+            color: #2a2018; /* Dark brown text color */
+            font-family: 'Georgia', serif;
+            position: relative;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            /* Remove the border-radius and overflow from body */
+        }
+
+        /* Add a new wrapper div for the rounded corners and burnt edges */
+        .parchment-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            border-radius: 15px;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .parchment-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at top left, transparent 70%, rgba(139, 69, 19, 0.4) 100%),
+                radial-gradient(circle at top right, transparent 70%, rgba(139, 69, 19, 0.4) 100%),
+                radial-gradient(circle at bottom left, transparent 70%, rgba(139, 69, 19, 0.4) 100%),
+                radial-gradient(circle at bottom right, transparent 70%, rgba(139, 69, 19, 0.4) 100%);
+        }
+
+        header {
+            background-color: #e0d0a8; /* Slightly darker parchment color for header */
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #8b7d6b; /* Brown border */
+            border-radius: 10px 10px 0 0; /* Rounded top corners */
+        }
+
+        h1 {
+            color: #D2691E; /* Brighter brown color (Chocolate) */
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8), -1px -1px 1px rgba(0, 0, 0, 0.2);
+            font-size: 2.5em;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        h2, h3 {
+            color: #4a2500; /* Dark brown for headings */
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+        }
+
+        .search-container input, .search-container button {
+            background-color: #f9f3e3; /* Light parchment color for input */
+            border: 1px solid #8b7d6b;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px; /* Rounded corners for input and button */
+        }
+
+        .search-container button {
+            background-color: #d2b48c; /* Tan color for button */
+            color: #4a2500;
+            cursor: pointer;
+        }
+
+        #vtt-list, #results, .video-result {
+            background-color: #f9f3e3;
+            border: 1px solid #8b7d6b;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px; /* Rounded corners for containers */
+        }
+
+        #vtt-files li {
+            list-style-type: none;
+            padding: 5px 0;
+            border-bottom: 1px dotted #8b7d6b;
+        }
+
+        a {
+            color: #8b4513; /* Darker brown for links */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Existing styles */
         #wordCloud {
             margin-top: 20px;
             text-align: center;
             line-height: 1.5;
         }
-* {
-  box-sizing: border-box;
-}
 
-/* Create two equal columns that floats next to each other */
-.column {
-  float: left;
-  width: 50%;
-  padding: 10px;
-  height: 300px; /* Should be removed. Only for demonstration */
-}
+        * {
+            box-sizing: border-box;
+        }
 
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
+        .column {
+            float: left;
+            width: 50%;
+            padding: 10px;
+            height: 300px; /* Should be removed. Only for demonstration */
+        }
 
-/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 600px) {
-  .column {
-    width: 100%;
-  }
-}
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 600px) {
+            .column {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
         <img src="images/purple.png" alt="Purple background" class="header-image">
-        <h1>anafora / αναφορά / reference</h1>
+        <h1 id="title">anafora αναφορά reference</h1>
     </header>
-    <p id="motto">"light to the darkness"</p>
+    <p id="motto"><i>"light on the darkness"</i></p>
     <main>
 
         <div class="search-container">
@@ -59,7 +154,7 @@
         <div class="two-column-row">
             <div id="column">
                 <div id="vtt-list">
-                    <h3>Available Searchable Files:</h3>
+                    <h3>Searchable Videos to date:</h3>
                     <ul id="vtt-files"></ul>
 
                     
