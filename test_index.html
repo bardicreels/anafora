@@ -13,6 +13,31 @@
             text-align: center;
             line-height: 1.5;
         }
+* {
+  box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+}
     </style>
 </head>
 <body>
@@ -22,22 +47,35 @@
     </header>
     <p id="motto">"light to the darkness"</p>
     <main>
+
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="Enter keyword...">
             <button id="searchButton">Search</button>
         </div>
+
         <div id="results"></div>
-        <div id="vtt-list">
-            <h3>Available Searchable Files:</h3>
-            <ul id="vtt-files"></ul>
-        </div>
+       
         
+        <div class="two-column-row">
+            <div id="column">
+                <div id="vtt-list">
+                    <h3>Available Searchable Files:</h3>
+                    <ul id="vtt-files"></ul>
+                </div> 
+            </div>
+            <div class="column">
+                <h3>Column 2</h3>
+                <p>Content for column 2 goes here.</p>
+            </div>
+        </div>
+
+
         <div id="wordCloud"></div>
         <div id="videoList"></div>
     </main>
     <footer>
         <p>&copy; 2024 the dead girl</p>
     </footer>
-    <script src="js/script.js"></script>
+    <script src="js/test_script.js"></script>
 </body>
 </html>
