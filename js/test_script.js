@@ -7,14 +7,29 @@ async function loadVideoList() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         videoList = await response.json();
+        await displayVTTFiles(); // Call displayVTTFiles after loading the video list
     } catch (error) {
         console.error('Error loading video list:', error);
     }
 }
 
+// Function to display video names
+async function displayVTTFiles() {
+    const vttFilesList = document.getElementById('vtt-files');
+    vttFilesList.innerHTML = '';
+    
+    videoList.forEach(video => {
+        if (video.name) {
+            const li = document.createElement('li');
+            li.textContent = video.name;
+            vttFilesList.appendChild(li);
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', async function() {
     console.log('The page has loaded successfully!');
-    await loadVideoList();
+    await loadVideoList(); // This will also call displayVTTFiles
 
     const searchButton = document.getElementById('searchButton');
     const searchInput = document.getElementById('searchInput');
@@ -133,4 +148,11 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
         return Math.floor(totalSeconds); // YouTube uses integer seconds
     }
+
+    // Call the function when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('The page has loaded successfully!');
+        loadVideoList();
+        displayVTTFiles();
+    });
 });
