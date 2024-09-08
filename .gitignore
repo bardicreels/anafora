@@ -1,0 +1,4 @@
+docs/.prompts.md
+long_mem.mdnode_modules/
+*.log
+.DS_Store
