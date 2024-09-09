@@ -17,7 +17,12 @@ function searchVTTContent(keyword) {
             item.text.toLowerCase().includes(keyword.toLowerCase())
         );
         if (matches.length > 0) {
-            results.push({ filename, name: fileData.name, url: fileData.url, matches });
+            results.push({ 
+                filename, 
+                name: fileData.name, 
+                url: fileData.url, 
+                matches 
+            });
         }
     }
     return results;
@@ -41,11 +46,11 @@ function displayResults(results) {
     } else {
         const resultHtml = results.map(result => `
             <div class="video-result">
-                <h3>${result.filename}</h3>
+                <h3>${result.name}</h3>
                 <ul>
                     ${result.matches.map(match => `
                         <li>
-                            <a href="${getYoutubeLink(result.filename, match.timestamp)}" target="_blank">
+                            <a href="${result.url}&t=${getTimestampSeconds(match.timestamp)}" target="_blank">
                                 <strong>${match.timestamp}</strong>
                             </a>: ${match.text}
                         </li>
@@ -55,6 +60,12 @@ function displayResults(results) {
         `).join('');
         resultsDiv.innerHTML = `<h2>Search Results:</h2>${resultHtml}`;
     }
+}
+
+function getTimestampSeconds(timestamp) {
+    const [start] = timestamp.split(' --> ');
+    const [minutes, seconds] = start.split(':');
+    return parseInt(minutes) * 60 + parseInt(seconds);
 }
 
 function initializeSearch() {
@@ -76,9 +87,27 @@ function initializeSearch() {
     });
 }
 
+function populateVTTList() {
+    const vttList = document.getElementById('vtt-files');
+    if (!vttList) {
+        console.error('VTT list element not found');
+        return;
+    }
+
+    const vttItems = Object.values(vttData).map(fileData => `
+        <li>
+            <a href="${fileData.url}" target="_blank">
+                ${fileData.name}
+            </a>
+        </li>
+    `);
+    vttList.innerHTML = vttItems.join('');
+}
+
 async function initialize() {
     await loadVTTData();
     initializeSearch();
+    populateVTTList();
 }
 
 // Run the initialize function when the DOM is fully loaded
