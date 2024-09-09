@@ -10,12 +10,13 @@
         body {
             background-color: #f4e6c0; /* Light parchment color */
             color: #2a2018; /* Dark brown text color */
-            font-family: 'Georgia', serif;
+            font-family: 'Adamina';
             position: relative;
             min-height: 100vh;
             padding: 20px;
             box-sizing: border-box;
             /* Remove the border-radius and overflow from body */
+            overflow-x: hidden; /* Prevent horizontal scrollbar */
         }
 
         /* Add a new wrapper div for the rounded corners and burnt edges */
@@ -50,7 +51,7 @@
             padding: 20px;
             text-align: center;
             border-bottom: 2px solid #8b7d6b; /* Brown border */
-            border-radius: 10px 10px 0 0; /* Rounded top corners */
+            border-radius: 10px; /* Rounded corners for all sides */
         }
 
         h1 {
@@ -144,11 +145,147 @@
                 width: 100%;
             }
         }
+
+        /* Update the header-image class */
+        .header-image {
+            position: relative;
+            animation: buzz 0.05s infinite;
+            border-radius: 10px; /* Match the header's border-radius */
+            overflow: hidden;
+            max-width: 100%; /* Ensure the image doesn't overflow the header */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        /* Modify rotating edges effect for more visibility */
+        .header-image::before,
+        .header-image::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg 30deg,
+                rgba(255,255,255,0.2) 30deg 60deg,
+                transparent 60deg 120deg,
+                rgba(255,255,255,0.2) 120deg 150deg,
+                transparent 150deg 360deg
+            );
+            animation: rotateEdges 6s linear infinite;
+        }
+
+        .header-image::after {
+            animation-direction: reverse;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg 60deg,
+                rgba(0,0,0,0.1) 60deg 90deg,
+                transparent 90deg 180deg,
+                rgba(0,0,0,0.1) 180deg 210deg,
+                transparent 210deg 360deg
+            );
+        }
+
+        /* Keep the existing buzz animation */
+        @keyframes buzz {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-0.5px, 0.5px); }
+            50% { transform: translate(0.5px, -0.5px); }
+            75% { transform: translate(-0.5px, -0.5px); }
+            100% { transform: translate(0.5px, 0.5px); }
+        }
+
+        /* Modify animation for rotating edges */
+        @keyframes rotateEdges {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Remove the .shake-image class as it's no longer needed */
+
+        /* Add this new style for the unsettling background effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            z-index: -1;
+            animation: unsettleBackground 15s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes unsettleBackground {
+            0% {
+                transform: scale(1) rotate(0deg);
+            }
+            50% {
+                transform: scale(1.02) rotate(0.5deg);
+            }
+            100% {
+                transform: scale(1.01) rotate(-0.5deg);
+            }
+        }
+
+        /* Add this new style for the artifact effect */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255,0,0,0.1), rgba(0,255,0,0.1));
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1001;
+            animation: artifact 8s infinite; /* Reduced from 15s to 8s */
+        }
+
+        @keyframes artifact {
+            0%, 100% { opacity: 0; transform: translateX(0); }
+            5% { opacity: 0.1; transform: translateX(3px); }
+            7% { opacity: 0; transform: translateX(0); }
+            10% { opacity: 0.1; transform: translateX(-3px); }
+            12% { opacity: 0; transform: translateX(0); }
+            30% { opacity: 0; transform: translateX(0); }
+            32% { opacity: 0.1; transform: translateX(5px); }
+            34% { opacity: 0; transform: translateX(0); }
+            60% { opacity: 0; transform: translateX(0); }
+            62% { opacity: 0.1; transform: translateX(-4px); }
+            64% { opacity: 0; transform: translateX(0); }
+            80% { opacity: 0; transform: translateX(0); }
+            82% { opacity: 0.1; transform: translateX(4px); }
+            84% { opacity: 0; transform: translateX(0); }
+        }
+
+        /* Adjust the existing unsettling background effect */
+        body::before {
+            mix-blend-mode: overlay;
+        }
+
+        /* Remove comments from body style */
+        body {
+            background-color: #f4e6c0;
+            color: #2a2018;
+            font-family: 'Georgia', serif;
+            position: relative;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+
     </style>
 </head>
 <body>
     <header>
-        <img src="images/purple.png" alt="Purple background" class="header-image">
+        <img src="images/purple.png" alt="Purple background" class="header-image rounded-image">
     </header>
     <main style="text-align: center;">
 

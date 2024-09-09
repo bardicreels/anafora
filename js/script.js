@@ -51,7 +51,7 @@ function displayResults(results) {
                     ${result.matches.map(match => `
                         <li>
                             <a href="${result.url}&t=${getTimestampSeconds(match.timestamp)}" target="_blank">
-                                <strong>${match.timestamp}</strong>
+                                <strong>${getStartTimecode(match.timestamp)}</strong>
                             </a>: ${match.text}
                         </li>
                     `).join('')}
@@ -66,6 +66,10 @@ function getTimestampSeconds(timestamp) {
     const [start] = timestamp.split(' --> ');
     const [minutes, seconds] = start.split(':');
     return parseInt(minutes) * 60 + parseInt(seconds);
+}
+
+function getStartTimecode(timestamp) {
+    return timestamp.split(' --> ')[0];
 }
 
 function initializeSearch() {
