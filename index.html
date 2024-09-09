@@ -86,23 +86,23 @@
             padding: 15px;
             margin-top: 20px;
             border-radius: 10px;
-            max-height: 300px; /* Set a maximum height */
-            overflow-y: auto; /* Enable vertical scrolling */
+            max-height: 300px;
+            overflow-y: auto;
         }
 
         #vtt-files {
             margin: 0;
-            padding: 0;
+            padding: 0 0 0 20px; /* Add left padding for numbers */
+            list-style-type: decimal; /* Use decimal numbering */
         }
 
         #vtt-files li {
-            list-style-type: none;
             padding: 5px 0;
             border-bottom: 1px dotted #8b7d6b;
         }
 
         #vtt-files li:last-child {
-            border-bottom: none; /* Remove border from last item */
+            border-bottom: none;
         }
 
         a {
@@ -152,31 +152,27 @@
         <h1 id="title">anafora αναφορά reference</h1>
     </header>
     <p id="motto"><i>"light on the darkness"</i></p>
-    <main>
+    <main style="text-align: center;">
         <!-- New section for chat.html content -->
-        <hi> chat bot coming soon</hi>
+        <h3> chat bot coming soon</h3>
         <section id="chat-section">
             <div id="chat-container"></div>
         </section>
 
+        <h3>Search Videos:</h3>
         <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Enter keyword...">
-            <button id="searchButton">Search</button>
+            <form id="search-form">
+                <input type="text" id="search-input" placeholder="Enter search term">
+                <button type="submit">Search</button>
+            </form>
+          
         </div>
-
         <div id="results"></div>
-       
-        
-        <div class="two-column-row">
-            <div id="column">
-                <div id="vtt-list">
-                    <h3>Searchable Videos to date:</h3>
-                    <ol id="vtt-files"></ol>
-                </div> 
-            </div>
+        <h3>Searchable Videos to date:</h3>
+        <div id="vtt-list">
+            <ol id="vtt-files"></ol>
+        </div> 
 
-        <div id="wordCloud"></div>
-        <div id="videoList"></div>
     </main>
     <footer>
         <p>&copy; 2024 the dead girl</p>

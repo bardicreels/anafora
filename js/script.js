@@ -1,158 +1,89 @@
-let videoList = [];
+let vttData = {};
 
-async function loadVideoList() {
+async function loadVTTData() {
     try {
-        const response = await fetch('data/video_list.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        videoList = await response.json();
-        await displayVTTFiles(); // Call displayVTTFiles after loading the video list
+        const response = await fetch('data/vtt_content.json');
+        vttData = await response.json();
+        console.log('VTT data loaded successfully');
     } catch (error) {
-        console.error('Error loading video list:', error);
+        console.error('Error loading VTT data:', error);
     }
 }
 
-// Function to display video names
-async function displayVTTFiles() {
-    const vttFilesList = document.getElementById('vtt-files');
-    vttFilesList.innerHTML = '';
-    
-    videoList.forEach((video, index) => {
-        if (video.name) {
-            const li = document.createElement('li');
-            li.textContent = video.name;
-            vttFilesList.appendChild(li);
+function searchVTTContent(keyword) {
+    const results = [];
+    for (const [filename, fileData] of Object.entries(vttData)) {
+        const matches = fileData.content.filter(item => 
+            item.text.toLowerCase().includes(keyword.toLowerCase())
+        );
+        if (matches.length > 0) {
+            results.push({ filename, name: fileData.name, url: fileData.url, matches });
         }
-    });
+    }
+    return results;
 }
 
-document.addEventListener('DOMContentLoaded', async function() {
-    console.log('The page has loaded successfully!');
-    await loadVideoList(); // This will also call displayVTTFiles
+function getYoutubeLink(filename, timestamp) {
+    const videoId = filename.split('-').pop().split('.')[0];
+    const [minutes, seconds] = timestamp.split(':');
+    const totalSeconds = parseInt(minutes) * 60 + parseInt(seconds);
+    return `https://www.youtube.com/watch?v=${videoId}&t=${totalSeconds}s`;
+}
 
-    const searchButton = document.getElementById('searchButton');
-    const searchInput = document.getElementById('searchInput');
+function displayResults(results) {
     const resultsDiv = document.getElementById('results');
+    if (!resultsDiv) {
+        console.error('Results div not found');
+        return;
+    }
+    if (results.length === 0) {
+        resultsDiv.innerHTML = 'No results found.';
+    } else {
+        const resultHtml = results.map(result => `
+            <div class="video-result">
+                <h3>${result.filename}</h3>
+                <ul>
+                    ${result.matches.map(match => `
+                        <li>
+                            <a href="${getYoutubeLink(result.filename, match.timestamp)}" target="_blank">
+                                <strong>${match.timestamp}</strong>
+                            </a>: ${match.text}
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+        `).join('');
+        resultsDiv.innerHTML = `<h2>Search Results:</h2>${resultHtml}`;
+    }
+}
 
-    searchButton.addEventListener('click', performSearch);
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            performSearch();
-        }
-    });
+function initializeSearch() {
+    const searchForm = document.getElementById('search-form');
+    const searchInput = document.getElementById('search-input');
 
-    async function performSearch() {
-        const keyword = searchInput.value.trim().toLowerCase();
-        if (keyword === '') {
-            alert('Please enter a keyword to search.');
-            return;
-        }
+    if (!searchForm || !searchInput) {
+        console.error('Search form or input not found');
+        return;
+    }
 
-        resultsDiv.innerHTML = 'Searching...';
-
-        try {
-            const results = await searchVTTFiles(keyword);
+    searchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const keyword = searchInput.value.trim();
+        if (keyword) {
+            const results = searchVTTContent(keyword);
             displayResults(results);
-        } catch (error) {
-            console.error('Error during search:', error);
-            resultsDiv.innerHTML = 'An error occurred during the search.';
         }
-    }
-
-    async function searchVTTFiles(keyword) {
-        const results = [];
-        for (const video of videoList) {
-            const vttPath = `vtt/${video.vtt}`;
-            try {
-                const response = await fetch(vttPath);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const vttContent = await response.text();
-                const matches = searchVTTContent(vttContent, keyword);
-                if (matches.length > 0) {
-                    results.push({ video, matches });
-                }
-            } catch (error) {
-                console.error(`Error reading VTT file ${vttPath}:`, error);
-            }
-        }
-        return results;
-    }
-
-    function searchVTTContent(content, keyword) {
-        const lines = content.split('\n');
-        const matches = [];
-        let currentTimestamp = '';
-
-        for (let i = 0; i < lines.length; i++) {
-            const line = lines[i].trim();
-            if (line.includes('-->')) {
-                const [start] = line.split(' --> ');
-                if (isValidTimestamp(start)) {
-                    currentTimestamp = start;
-                }
-            } else if (line.toLowerCase().includes(keyword)) {
-                matches.push({ timestamp: currentTimestamp, text: line });
-            }
-        }
-        return matches;
-    }
-
-    function isValidTimestamp(timestamp) {
-        // This regex checks for the format HH:MM:SS.mmm or HH:MM:SS
-        return /^\d{2}:\d{2}:\d{2}(\.\d{3})?$/.test(timestamp);
-    }
-
-    function displayResults(results) {
-        if (results.length === 0) {
-            resultsDiv.innerHTML = 'No results found.';
-        } else {
-            const resultHtml = results.map(result => `
-                <div class="video-result">
-                    <h3>${result.video.name}</h3>
-                    <ul>
-                        ${result.matches.map(match => `
-                            <li>
-                                <a href="${getYoutubeLink(result.video.url, match.timestamp)}" target="_blank">
-                                    <strong>${match.timestamp}</strong>
-                                </a>: ${match.text}
-                            </li>
-                        `).join('')}
-                    </ul>
-                </div>
-            `).join('');
-            resultsDiv.innerHTML = `<h2>Search Results:</h2>${resultHtml}`;
-        }
-    }
-
-    function getYoutubeLink(videoUrl, timestamp) {
-        try {
-            const url = new URL(videoUrl);
-            const seconds = convertTimestampToSeconds(timestamp);
-            url.searchParams.set('t', seconds);
-            return url.toString();
-        } catch (error) {
-            console.error('Invalid video URL:', videoUrl);
-            return '#'; // Return a placeholder link if the URL is invalid
-        }
-    }
-
-    function convertTimestampToSeconds(timestamp) {
-        const [time, milliseconds] = timestamp.split('.');
-        const [hours, minutes, seconds] = time.split(':').map(Number);
-        let totalSeconds = hours * 3600 + minutes * 60 + seconds;
-        if (milliseconds) {
-            totalSeconds += Number(milliseconds) / 1000;
-        }
-        return Math.floor(totalSeconds); // YouTube uses integer seconds
-    }
-
-    // Call the function when the page loads
-    document.addEventListener('DOMContentLoaded', () => {
-        console.log('The page has loaded successfully!');
-        loadVideoList();
-        displayVTTFiles();
     });
-});
+}
+
+async function initialize() {
+    await loadVTTData();
+    initializeSearch();
+}
+
+// Run the initialize function when the DOM is fully loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initialize);
+} else {
+    initialize();
+}
