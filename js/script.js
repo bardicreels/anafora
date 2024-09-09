@@ -120,3 +120,44 @@ if (document.readyState === 'loading') {
 } else {
     initialize();
 }
+
+function shakeElement(element) {
+    const originalPosition = element.style.transform;
+    const shakeIntensity = 0.3; // Slightly increased for visibility
+    let beatCount = 0;
+    const beatsPerCycle = 2;
+    const cycleCount = 3; // Number of heartbeat cycles
+
+    function heartbeatShake() {
+        if (beatCount >= beatsPerCycle * cycleCount) {
+            element.style.transform = originalPosition;
+            return;
+        }
+
+        const currentBeat = beatCount % beatsPerCycle;
+        const xShift = (Math.random() - 0.5) * shakeIntensity;
+        const yShift = (Math.random() - 0.5) * shakeIntensity;
+
+        if (currentBeat === 0) {
+            // First beat: quick, strong shake
+            element.style.transform = `translate(${xShift * 1.5}px, ${yShift * 1.5}px)`;
+            setTimeout(() => {
+                element.style.transform = originalPosition;
+                setTimeout(heartbeatShake, 100); // Short pause before second beat
+            }, 50);
+        } else {
+            // Second beat: slightly weaker shake
+            element.style.transform = `translate(${xShift}px, ${yShift}px)`;
+            setTimeout(() => {
+                element.style.transform = originalPosition;
+                setTimeout(heartbeatShake, 600); // Longer pause before next cycle
+            }, 50);
+        }
+
+        beatCount++;
+    }
+
+    heartbeatShake();
+}
+
+// Remove or comment out the shakeElementHorizontally function if not needed
