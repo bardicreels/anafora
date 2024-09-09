@@ -3,3 +3,4 @@ long_mem.md
 node_modules/
 *.log
 .DS_Store
+.ignore
