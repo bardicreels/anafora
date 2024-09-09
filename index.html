@@ -8,18 +8,20 @@
     <link rel="icon" type="image/png" href="images/purple.png">
     <style>
         body {
-            background-color: #f4e6c0; /* Light parchment color */
-            color: #2a2018; /* Dark brown text color */
-            font-family: 'Adamina';
+            background-color: #f4e6c0;
+            background-image: 
+                linear-gradient(to bottom, rgba(128, 0, 128, 0.02), rgba(128, 0, 128, 0.04)),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(128,0,128,0.05)" stroke-width="0.5"/></svg>');
+            background-size: 100% 100%, 100px 100px;
+            color: #2a2018;
+            font-family: 'Georgia', serif;
             position: relative;
             min-height: 100vh;
             padding: 20px;
             box-sizing: border-box;
-            /* Remove the border-radius and overflow from body */
-            overflow-x: hidden; /* Prevent horizontal scrollbar */
+            overflow-x: hidden;
         }
 
-        /* Add a new wrapper div for the rounded corners and burnt edges */
         .parchment-wrapper {
             position: fixed;
             top: 0;
@@ -40,61 +42,84 @@
             right: 0;
             bottom: 0;
             background: 
-                radial-gradient(circle at top left, transparent 70%, rgba(139, 69, 19, 0.4) 100%),
-                radial-gradient(circle at top right, transparent 70%, rgba(139, 69, 19, 0.4) 100%),
-                radial-gradient(circle at bottom left, transparent 70%, rgba(139, 69, 19, 0.4) 100%),
-                radial-gradient(circle at bottom right, transparent 70%, rgba(139, 69, 19, 0.4) 100%);
+                radial-gradient(circle at top left, transparent 70%, rgba(128, 0, 128, 0.05) 100%),
+                radial-gradient(circle at top right, transparent 70%, rgba(128, 0, 128, 0.05) 100%),
+                radial-gradient(circle at bottom left, transparent 70%, rgba(128, 0, 128, 0.05) 100%),
+                radial-gradient(circle at bottom right, transparent 70%, rgba(128, 0, 128, 0.05) 100%);
         }
 
         header {
-            background-color: #e0d0a8; /* Slightly darker parchment color for header */
+            background-color: rgba(224, 208, 168, 0.95);
+            backdrop-filter: blur(2px);
+            box-shadow: 0 0 15px rgba(128, 0, 128, 0.1);
             padding: 20px;
             text-align: center;
-            border-bottom: 2px solid #8b7d6b; /* Brown border */
-            border-radius: 10px; /* Rounded corners for all sides */
+            border-bottom: 2px solid rgba(139, 125, 107, 0.3);
+            border-radius: 10px;
         }
 
         h1 {
-            color: #D2691E; /* Brighter brown color (Chocolate) */
-            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8), -1px -1px 1px rgba(0, 0, 0, 0.2);
+            color: #5d0076; /* Darker purple */
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8), -1px -1px 1px rgba(128, 0, 128, 0.1);
             font-size: 2.5em;
             font-weight: bold;
             letter-spacing: 1px;
         }
 
         h2, h3 {
-            color: #4a2500; /* Dark brown for headings */
+            color: #4a2500;
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
         }
 
         .search-container input, .search-container button {
-            background-color: #f9f3e3; /* Light parchment color for input */
-            border: 1px solid #8b7d6b;
+            background-color: rgba(249, 243, 227, 0.95);
+            border: 1px solid rgba(128, 0, 128, 0.2);
             padding: 10px;
             margin: 5px;
-            border-radius: 5px; /* Rounded corners for input and button */
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace; /* Change font to a monospace style */
+            font-size: 16px; /* Adjust font size as needed */
+            color: #4a0e4e; /* Dark purple color for text */
+        }
+
+        .search-container input::placeholder {
+            color: #8a4b8e; /* Lighter purple for placeholder text */
+        }
+
+        .search-container input:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(128, 0, 128, 0.3);
+            border-color: rgba(128, 0, 128, 0.4);
         }
 
         .search-container button {
-            background-color: #d2b48c; /* Tan color for button */
+            background-color: rgba(210, 180, 140, 0.95);
             color: #4a2500;
             cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .search-container button:hover {
+            background-color: rgba(128, 0, 128, 0.1);
+            color: #5d0076;
         }
 
         #vtt-list {
-            background-color: #f9f3e3;
-            border: 1px solid #8b7d6b;
+            background-color: rgba(249, 243, 227, 0.95);
+            border: 1px solid rgba(128, 0, 128, 0.1);
             padding: 15px;
             margin-top: 20px;
             border-radius: 10px;
             max-height: 300px;
             overflow-y: auto;
+            box-shadow: 0 0 15px rgba(128, 0, 128, 0.05);
         }
 
         #vtt-files {
             margin: 0;
-            padding: 0 0 0 20px; /* Add left padding for numbers */
-            list-style-type: decimal; /* Use decimal numbering */
+            padding: 0 0 0 20px;
+            list-style-type: decimal;
         }
 
         #vtt-files li {
@@ -107,15 +132,15 @@
         }
 
         a {
-            color: #8b4513; /* Darker brown for links */
+            color: #5d0076;
             text-decoration: none;
+            transition: color 0.3s ease;
         }
 
         a:hover {
-            text-decoration: underline;
+            color: #8b008b;
         }
 
-        /* Existing styles */
         #wordCloud {
             margin-top: 20px;
             text-align: center;
@@ -130,7 +155,7 @@
             float: left;
             width: 50%;
             padding: 10px;
-            height: 300px; /* Should be removed. Only for demonstration */
+            height: 300px;
         }
 
         .row:after {
@@ -139,24 +164,21 @@
             clear: both;
         }
 
-        /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
         @media screen and (max-width: 600px) {
             .column {
                 width: 100%;
             }
         }
 
-        /* Update the header-image class */
         .header-image {
             position: relative;
             animation: buzz 0.05s infinite;
-            border-radius: 10px; /* Match the header's border-radius */
+            border-radius: 10px;
             overflow: hidden;
-            max-width: 100%; /* Ensure the image doesn't overflow the header */
-            height: auto; /* Maintain aspect ratio */
+            max-width: 100%;
+            height: auto;
         }
 
-        /* Modify rotating edges effect for more visibility */
         .header-image::before,
         .header-image::after {
             content: '';
@@ -188,7 +210,6 @@
             );
         }
 
-        /* Keep the existing buzz animation */
         @keyframes buzz {
             0% { transform: translate(0, 0); }
             25% { transform: translate(-0.5px, 0.5px); }
@@ -197,15 +218,11 @@
             100% { transform: translate(0.5px, 0.5px); }
         }
 
-        /* Modify animation for rotating edges */
         @keyframes rotateEdges {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        /* Remove the .shake-image class as it's no longer needed */
-
-        /* Add this new style for the unsettling background effect */
         body::before {
             content: '';
             position: fixed;
@@ -231,7 +248,6 @@
             }
         }
 
-        /* Add this new style for the artifact effect */
         body::after {
             content: '';
             position: fixed;
@@ -239,38 +255,38 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(rgba(255,0,0,0.1), rgba(0,255,0,0.1));
-            opacity: 0;
+            background: linear-gradient(rgba(128, 0, 128, 0.01), rgba(128, 0, 128, 0.02));
+            opacity: 0.7;
             pointer-events: none;
             z-index: 1001;
-            animation: artifact 8s infinite; /* Reduced from 15s to 8s */
+            animation: liquidWave 12s ease-in-out infinite;
+        }
+
+        @keyframes liquidWave {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-2px) rotate(0.3deg); }
         }
 
         @keyframes artifact {
             0%, 100% { opacity: 0; transform: translateX(0); }
-            5% { opacity: 0.1; transform: translateX(3px); }
+            5% { opacity: 0.03; transform: translateX(1px); background: linear-gradient(rgba(128,0,128,0.03), rgba(0,255,0,0.03)); }
             7% { opacity: 0; transform: translateX(0); }
-            10% { opacity: 0.1; transform: translateX(-3px); }
+            10% { opacity: 0.03; transform: translateX(-1px); background: linear-gradient(rgba(255,0,0,0.03), rgba(128,0,128,0.03)); }
             12% { opacity: 0; transform: translateX(0); }
             30% { opacity: 0; transform: translateX(0); }
-            32% { opacity: 0.1; transform: translateX(5px); }
+            32% { opacity: 0.03; transform: translateX(2px); background: linear-gradient(rgba(128,0,128,0.03), rgba(0,255,0,0.03)); }
             34% { opacity: 0; transform: translateX(0); }
             60% { opacity: 0; transform: translateX(0); }
-            62% { opacity: 0.1; transform: translateX(-4px); }
+            62% { opacity: 0.03; transform: translateX(-2px); background: linear-gradient(rgba(255,0,0,0.03), rgba(128,0,128,0.03)); }
             64% { opacity: 0; transform: translateX(0); }
             80% { opacity: 0; transform: translateX(0); }
-            82% { opacity: 0.1; transform: translateX(4px); }
+            82% { opacity: 0.03; transform: translateX(1px); background: linear-gradient(rgba(128,0,128,0.03), rgba(0,255,0,0.03)); }
             84% { opacity: 0; transform: translateX(0); }
         }
 
-        /* Adjust the existing unsettling background effect */
-        body::before {
-            mix-blend-mode: overlay;
-        }
-
-        /* Remove comments from body style */
         body {
             background-color: #f4e6c0;
+            background-image: linear-gradient(to bottom, rgba(128, 0, 128, 0.05), rgba(128, 0, 128, 0.1));
             color: #2a2018;
             font-family: 'Georgia', serif;
             position: relative;
@@ -280,6 +296,68 @@
             overflow-x: hidden;
         }
 
+        main {
+            text-align: left; /* Change from center to left */
+            max-width: 800px; /* Limit the width of the main content */
+            margin: 0 auto; /* Center the main content block */
+        }
+
+        #results {
+            text-align: left;
+            background-color: rgba(249, 243, 227, 0.95);
+            border: 1px solid rgba(128, 0, 128, 0.1);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(128, 0, 128, 0.05);
+        }
+
+        .video-result {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px dotted rgba(128, 0, 128, 0.2);
+        }
+
+        .video-result:last-child {
+            border-bottom: none;
+        }
+
+        .video-result h3 {
+            margin-bottom: 10px;
+        }
+
+        .video-result ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .video-result li {
+            margin-bottom: 5px;
+        }
+
+        .result-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .timestamp {
+            flex-shrink: 0;
+            width: 80px; /* Increased from 70px to 80px */
+            margin-right: 15px; /* Increased from 10px to 15px */
+            text-align: right; /* Align timestamp to the right */
+        }
+
+        .result-text {
+            flex-grow: 1;
+            word-break: break-word;
+            padding-left: 5px; /* Add a small padding to the left of the text */
+        }
+
+        /* Add this new style */
+        .video-result ul {
+            padding-left: 0; /* Remove default padding */
+        }
 
     </style>
 </head>
@@ -287,30 +365,25 @@
     <header>
         <img src="images/purple.png" alt="Purple background" class="header-image rounded-image">
     </header>
-    <main style="text-align: center;">
-
-
+    <main>
         <h3>Search Videos:</h3>
         <div class="search-container">
             <form id="search-form">
                 <input type="text" id="search-input" placeholder="Enter search term">
                 <button type="submit">Search</button>
             </form>
-          
         </div>
         <div id="results"></div>
         <h3>Searchable Videos to date:</h3>
         <div id="vtt-list">
             <ol id="vtt-files"></ol>
-        </div> 
-
+        </div>
     </main>
     <footer>
         <p>&copy; 2024 the dead girl</p>
     </footer>
     
     <script src="js/script.js"></script>
-    <!-- Add a new script to load chat.html content -->
     <script>
         fetch('chat.html')
             .then(response => response.text())
@@ -320,7 +393,6 @@
             .catch(error => console.error('Error loading chat.html:', error));
     </script>
 
-            <!-- New section for chat.html content -->
             <h3> chat bot coming soon</h3>
             <section id="chat-section">
                 <div id="chat-container"></div>

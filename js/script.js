@@ -42,17 +42,18 @@ function displayResults(results) {
         return;
     }
     if (results.length === 0) {
-        resultsDiv.innerHTML = 'No results found.';
+        resultsDiv.innerHTML = '<p>No results found.</p>';
     } else {
-        const resultHtml = results.map(result => `
-            <div class="video-result">
+        const resultHtml = results.map((result, index) => `
+            <div class="video-result" style="animation: fadeIn 0.5s ease-out ${index * 0.1}s both;">
                 <h3>${result.name}</h3>
                 <ul>
                     ${result.matches.map(match => `
-                        <li>
-                            <a href="${result.url}&t=${getTimestampSeconds(match.timestamp)}" target="_blank">
+                        <li class="result-item">
+                            <a href="${result.url}&t=${getTimestampSeconds(match.timestamp)}" target="_blank" class="timestamp">
                                 <strong>${getStartTimecode(match.timestamp)}</strong>
-                            </a>: ${match.text}
+                            </a>
+                            <span class="result-text">${match.text}</span>
                         </li>
                     `).join('')}
                 </ul>
