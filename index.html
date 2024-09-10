@@ -359,6 +359,23 @@
             padding-left: 0; /* Remove default padding */
         }
 
+        .iframe-container {
+            background-color: #f4e6c0;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 20px auto;
+            max-width: 100%; /* Changed from 1000px to 100% */
+            width: 100%; /* Added to ensure full width */
+        }
+
+        .huggingface-iframe {
+            border: 2px solid #f4e6c0;
+            border-radius: 5px;
+            width: 100%;
+            height: 450px; /* Adjusted to match the second iframe */
+            min-width: 850px; /* Added to ensure minimum width */
+        }
+
     </style>
 </head>
 <body>
@@ -366,53 +383,51 @@
         <img src="images/android-chrome-512x512.png" alt="Purple background" class="header-image rounded-image">
     </header>
     <main>
-        <h3>Search Videos:</h3>
-        <div class="search-container">
-            <form id="search-form">
-                <input type="text" id="search-input" placeholder="Enter search term">
-                <button type="submit">Search</button>
-            </form>
+        <div class="two-column-container">
+            <div class="column">
+                <h3>Search Videos:</h3>
+                <div class="search-container">
+                    <form id="search-form">
+                        <input type="text" id="search-input" placeholder="Enter search term">
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+                <div id="results"></div>
+                <h3>Searchable Videos to date:</h3>
+                <div id="vtt-list">
+                    <ol id="vtt-files"></ol>
+                </div>
+            </div>
+            <div class="column">
+                <section id="chat-section">
+                    <div class="iframe-container">
+                        <iframe style="min-width: 100%; min-height: 100%; background: black;"
+                            src="https://bardicreels-chat-with-pdf.hf.space?embed=true" 
+                            class="huggingface-iframe"
+                            frameborder="0"
+                            allowfullscreen
+                        ></iframe>
+                    </div>
+                </section>
+            </div>
         </div>
-        <div id="results"></div>
-        <h3>Searchable Videos to date:</h3>
-        <div id="vtt-list">
-            <ol id="vtt-files"></ol>
-        </div>
-    </main>
-    <footer>
-        <p>&copy; 2024 the dead girl</p>
-    </footer>
-    
-    <script src="js/script.js"></script>
-    <script>
-        fetch('chat.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('chat-container').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading chat.html:', error));
-    </script>
 
-            <h3> chat bot coming soon</h3>
-            <section id="chat-section">
-                <div class="iframe-container">
-                    <iframe 
-                        src="https://huggingface.co/spaces/your-space-name/embed" 
-                        class="huggingface-iframe"
-                        frameborder="0"
-                        allowfullscreen
-                    ></iframe>
-            </section>
-            <h3> json chat bot</h3>
+
+        </main>
+
+<!--
+ <h3> json chat bot</h3>
 <section id="chat-json">
     <iframe
-	src="https://bardicreels-chat-with-json.hf.space"
+	src="https://bardicreels-chat-with-json.hf.space?embed=true"
 	frameborder="0"
 	width="850"
 	height="450"
-></iframe>
-
-
+</iframe>
 </section>
+--->
+<script src="js/script.js"></script>
 </body>
+
+<footer><p>&copy; 2024 the dead girl</p></footer>
 </html>
