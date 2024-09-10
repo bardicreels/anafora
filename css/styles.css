@@ -9,7 +9,7 @@ body {
     min-height: 100vh;
 }
 
-header, main, footer {
+header, main {
     padding: 20px;
     width: 100%;
     max-width: 800px;
@@ -119,7 +119,3 @@ mark {
     min-width: 850px; /* Added to ensure minimum width */
 }
 
-footer {
-    text-align: center;
-    margin-top: auto;
-}
