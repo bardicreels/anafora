@@ -1,0 +1,124 @@
+import youtube_dl
+import os
+import csv
+import time
+import random
+import psutil
+import json
+from tqdm import tqdm
+
+# Absolute path to the vtt directory and data directory
+vtt_dir = '/vtt'
+data_dir = '/data'
+
+# Create the vtt directory if it doesn't exist
+if not os.path.exists(vtt_dir):
+    os.makedirs(vtt_dir)
+
+# Function to load existing vtt_content
+def load_vtt_content():
+    vtt_content_path = os.path.join(data_dir, 'vtt_content.json')
+    if os.path.exists(vtt_content_path):
+        with open(vtt_content_path, 'r') as f:
+            return json.load(f)
+    return {}
+
+# Function to save vtt_content
+def save_vtt_content(vtt_content):
+    vtt_content_path = os.path.join(data_dir, 'vtt_content.json')
+    with open(vtt_content_path, 'w', encoding='utf-8') as f:
+        json.dump(vtt_content, f, ensure_ascii=False, indent=2)
+
+# Load existing vtt_content
+vtt_content = load_vtt_content()
+
+# Extract existing YouTube IDs from vtt_content
+existing_ids = set()
+for entry in vtt_content.values():
+    video_id = entry['url'].split('v=')[-1]
+    existing_ids.add(video_id)
+
+# Read video information from CSV in the data/ directory
+video_info = {}
+csv_path = os.path.join('data', 'total_video_list.csv')
+with open(csv_path, 'r', encoding='utf-8') as csvfile:
+    reader = csv.reader(csvfile)
+    next(reader)  # Skip header row if it exists
+    for row in reader:
+        video_id = row[0]  # Assuming video ID is in the first column
+        video_name = row[1]  # Assuming video name is in the second column
+        if video_id not in existing_ids:
+            video_info[video_id] = video_name
+
+# Function to sanitize filename
+def sanitize_filename(filename):
+    # Remove apostrophes and join 's' to the previous word
+    filename = filename.replace("'s", "s").replace("'", "")
+    return "".join([c for c in filename if c.isalpha() or c.isdigit() or c in ' -_.']).rstrip()
+
+# Function to check resource usage
+def check_resources():
+    cpu_usage = psutil.cpu_percent(interval=1)
+    ram_usage = psutil.virtual_memory().percent
+    return cpu_usage <= 20 and ram_usage <= 20
+
+# Function to parse VTT content
+def parse_vtt_content(content):
+    lines = content.split('\n')
+    parsed_content = []
+    for i in range(0, len(lines), 3):
+        if i+2 < len(lines):
+            parsed_content.append({
+                "timestamp": lines[i],
+                "text": lines[i+1]
+            })
+    return parsed_content
+
+# youtube-dl configuration
+ydl_opts = {
+    'skip_download': True,  # We don't want to download the video, just the subtitles
+    'writeautomaticsub': True,  # Download auto-generated subtitles
+    'subtitlesformat': 'vtt',  # We want the subtitles in VTT format
+    'outtmpl': os.path.join(vtt_dir, '%(id)s.%(ext)s'),  # Temporary output template
+}
+
+# Download subtitles for each video
+with tqdm(total=len(video_info), desc="Downloading subtitles") as pbar:
+    for video_id, video_name in video_info.items():
+        while not check_resources():
+            time.sleep(5)  # Wait for 5 seconds if resource usage is high
+        
+        url = f'https://www.youtube.com/watch?v={video_id}'
+        try:
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([url])
+            
+            # Rename the file to use the video name
+            temp_filename = os.path.join(vtt_dir, f'{video_id}.en.vtt')
+            new_filename = os.path.join(vtt_dir, f'{sanitize_filename(video_name)}.vtt')
+            if os.path.exists(temp_filename):
+                os.rename(temp_filename, new_filename)
+                
+                # Read and parse the VTT content
+                with open(new_filename, 'r', encoding='utf-8') as vtt_file:
+                    vtt_content[os.path.basename(new_filename)] = {
+                        "name": sanitize_filename(video_name),
+                        "url": url,
+                        "content": parse_vtt_content(vtt_file.read())
+                    }
+                
+                # Save the updated vtt_content immediately
+                save_vtt_content(vtt_content)
+            else:
+                print(f"Warning: Expected file {temp_filename} not found.")
+            
+            pbar.update(1)
+            pbar.set_postfix_str(f"Downloaded: {video_name}")
+        except Exception as e:
+            print(f"\nError downloading subtitles for video {video_name} ({video_id}): {str(e)}")
+        
+        # Random delay between 1 and 5 seconds
+        time.sleep(random.uniform(1, 5))
+
+print("\nSubtitle download process completed.")
+print(f"VTT content saved to {os.path.join(data_dir, 'vtt_content.json')}")
