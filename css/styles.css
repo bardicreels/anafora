@@ -107,14 +107,14 @@ mark {
     padding: 10px;
     border-radius: 5px;
     margin: 20px auto;
-    max-width: 800px; /* Adjust as needed */
+    max-width: 1000px; /* Adjust as needed */
 }
 
 .huggingface-iframe {
     border: 2px solid #f4e6c0; /* Green border */
     border-radius: 5px;
     width: 100%;
-    height: 600px; /* Adjust as needed */
+    height: 900px; /* Adjust as needed */
 }
 
 footer {
