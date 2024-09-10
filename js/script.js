@@ -82,6 +82,8 @@ function initializeSearch() {
         return;
     }
 
+    searchInput.placeholder = "Search video History";
+
     searchForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const keyword = searchInput.value.trim();
