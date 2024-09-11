@@ -1,3 +1,18 @@
+"""
+This script processes a CSV file of video entries and a JSON file of VTT content.
+It performs the following tasks:
+1. Removes duplicate entries from the CSV file
+2. Checks which videos have corresponding VTT files
+3. Updates the CSV file with checkmarks for processed videos
+4. Displays a progress bar showing the completion status
+
+Key features:
+- Extracts YouTube video IDs from URLs
+- Cleans video titles
+- Handles file reading and writing operations
+- Provides detailed console output for tracking progress and errors
+"""
+
 import csv
 import json
 import re

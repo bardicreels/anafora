@@ -1,3 +1,13 @@
+"""
+This script scans a directory for VTT files with an extra dot in their extension
+(e.g., '..vtt') and renames them to have the correct '.vtt' extension.
+
+Key features:
+1. Uses regular expressions to identify and correct file extensions
+2. Provides console output for each renamed file
+3. Can be easily modified to work with different directories
+"""
+
 import os
 import re
 

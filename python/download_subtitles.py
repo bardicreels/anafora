@@ -1,3 +1,17 @@
+"""
+This script downloads subtitles for YouTube videos listed in a CSV file.
+It uses yt-dlp to fetch VTT subtitles, processes them, and stores the content in a JSON file.
+The script also includes functions for resource management, error handling, and progress tracking.
+
+Key features:
+1. Loads existing VTT content and avoids re-downloading
+2. Extracts video IDs from YouTube URLs
+3. Sanitizes filenames and manages file operations
+4. Implements resource checking to prevent overload
+5. Provides progress tracking with a progress bar
+6. Handles errors and interruptions gracefully
+"""
+
 import yt_dlp
 import os
 import csv
