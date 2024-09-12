@@ -119,3 +119,6 @@ mark {
     min-width: 850px; /* Added to ensure minimum width */
 }
 
+.spacer {
+    height: 300px; /* Adjust this value to increase or decrease the space */
+  }
