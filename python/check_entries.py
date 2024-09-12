@@ -28,10 +28,15 @@ def clean_title(title):
     cleaned = re.sub(r'^-*\s*', '', cleaned)
     return cleaned.strip()
 
-# Define absolute paths
-base_path = os.path.expanduser('~/Desktop/projects/askthelady')
-vtt_content_path = os.path.join(base_path, 'data', 'vtt_content.json')
-total_video_list_path = os.path.join(base_path, 'data', 'total_video_list.csv')
+# Get the directory of the current script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Go up one level to the project root
+project_root = os.path.dirname(script_dir)
+
+# Define paths relative to the project root
+vtt_content_path = os.path.join(project_root, 'data', 'vtt_content.json')
+total_video_list_path = os.path.join(project_root, 'data', 'total_video_list.csv')
 
 # Check if files exist
 if not os.path.exists(vtt_content_path):

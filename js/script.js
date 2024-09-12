@@ -163,4 +163,56 @@ function shakeElement(element) {
     heartbeatShake();
 }
 
-// Remove or comment out the shakeElementHorizontally function if not needed
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+var img = document.getElementById("myImg");
+var modalImg = document.getElementById("img01");
+var captionText = document.getElementById("caption");
+img.onclick = function(){
+  modal.style.display = "block";
+  modalImg.src = this.src;
+  captionText.innerHTML = this.alt;
+}
+
+// Close the modal when clicking anywhere
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+// Get all images with class 'modal-image'
+var images = document.getElementsByClassName("modal-image");
+
+// Set up click event for all modal images
+for (var i = 0; i < images.length; i++) {
+    images[i].onclick = function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+}
+
+// Add this after the click event setup
+for (var i = 0; i < images.length; i++) {
+    images[i].onmouseover = function() {
+        this.style.opacity = "0.7";
+    }
+    images[i].onmouseout = function() {
+        this.style.opacity = "1";
+    }
+}
+
+// Get all images within the claims section
+var claimImages = document.querySelectorAll('#claims-section img');
+
+// Set up click event for all claim images
+claimImages.forEach(function(img) {
+    img.onclick = function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+});
