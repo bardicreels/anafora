@@ -25,13 +25,14 @@ def create_name_from_filename(filename):
     # Remove the file extension
     name = os.path.splitext(filename)[0]
     
-    # Remove the YouTube video ID (assuming it's always at the end, after the last hyphen)
-    name = re.sub(r'-[^-]+$', '', name)
+    # Remove the YouTube video ID, handling both -! and regular cases
+    name = re.sub(r'-!.*$', '', name)  # Remove everything after -! if it exists
+    name = re.sub(r'-[^-]+$', '', name)  # Remove the last part after a hyphen if no -!
     
     # Replace underscores with spaces
     name = name.replace('_', ' ')
     
-    return name
+    return name.strip()  # Remove any trailing whitespace
 
 def parse_vtt_content(content):
     # Remove WebVTT header
@@ -53,6 +54,23 @@ def parse_vtt_content(content):
     
     return parsed_content
 
+def extract_video_id_from_filename(filename):
+    # Remove the .vtt extension
+    name_without_extension = os.path.splitext(filename)[0]
+    
+    # Check for the -! pattern
+    if '-!' in name_without_extension:
+        # Split by -! and return everything after it
+        return name_without_extension.split('-!')[-1]
+    
+    # Use regex to find the video ID at the end of the filename
+    match = re.search(r'-([^-]+)$', name_without_extension)
+    if match:
+        return match.group(1)  # Return the entire match after the last hyphen
+    else:
+        # Fallback: if there's no match, return the whole filename without extension
+        return name_without_extension
+
 # Get list of VTT files
 vtt_dir = os.path.join(project_root, 'vtt')
 vtt_files = [f for f in os.listdir(vtt_dir) if f.endswith('.vtt')]
@@ -63,9 +81,12 @@ for vtt_filename in vtt_files:
     content = read_vtt_file(vtt_filename)
     parsed_content = parse_vtt_content(content)
     
+    video_id = extract_video_id_from_filename(vtt_filename)
+    url = f"https://www.youtube.com/watch?v={video_id}"
+    
     vtt_data[vtt_filename] = {
         "name": create_name_from_filename(vtt_filename),
-        "url": f"https://www.youtube.com/watch?v={vtt_filename.split('-')[-1].split('.')[0]}",
+        "url": url,
         "content": parsed_content
     }
 

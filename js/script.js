@@ -28,7 +28,7 @@ function searchVTTContent(keyword) {
     return results;
 }
 
-function getYoutubeLink(filename, timestamp) {
+function getYoutubeLink(filename, timestampz) {
     const videoId = filename.split('-').pop().split('.')[0];
     const [minutes, seconds] = timestamp.split(':');
     const totalSeconds = parseInt(minutes) * 60 + parseInt(seconds);
