@@ -255,6 +255,15 @@ main {
 }
 
 /* Modal styles */
+ /* Style the Image Used to Trigger the Modal */
+ #myImg {
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  #myImg:hover {opacity: 0.7;}
+
 .modal {
     display: none;
     position: fixed;
@@ -295,11 +304,43 @@ main {
     height: 150px;
 }
 
+
+  /* Caption of Modal Image (Image Text) - Same Width as the Image */
+  #caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+  }
+  
+
 /* Animation */
 .modal-content, .modal-caption {  
     animation-name: zoom;
     animation-duration: 0.6s;
 }
+
+ @media only screen and (max-width: 700px){
+    .modal-content {
+          width: 100%;
+        }
+    }
+    
+     .modal-image {
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+            max-width: 300px;
+            width: auto;
+            height: auto;
+            display: inline-block;
+            margin: 10px;
+        }
+    
+
 
 @keyframes zoom {
     from {transform:scale(0)} 
@@ -323,6 +364,10 @@ main {
     text-decoration: none;
     cursor: pointer;
 }
+
+
+
+/* end of modal styles */
 
 /* claims section */
 

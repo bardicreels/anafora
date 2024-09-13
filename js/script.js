@@ -240,79 +240,88 @@ function shakeElement(element) {
     heartbeatShake();
 }
 
-// Get the images and modals
-var img1 = document.getElementById("myImg1");
-var img2 = document.getElementById("myImg2");
-var modal1 = document.getElementById("myModal1");
-var modal2 = document.getElementById("myModal2");
-var modalImg1 = document.getElementById("img01");
-var modalImg2 = document.getElementById("img02");
-var captionText1 = document.getElementById("caption1");
-var captionText2 = document.getElementById("caption2");
 
-// Function to open modal
-function openModal(img, modal, modalImg, captionText) {
-    modal.style.display = "block";
-    modalImg.src = img.src;
-    captionText.innerHTML = img.alt;
-    captionText.className = "modal-caption";
-    
-    // Store the original image source
-    modalImg.dataset.originalSrc = img.src;
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+var img = document.getElementById("myImg");
+var modalImg = document.getElementById("img01");
+var captionText = document.getElementById("caption");
+
+img.onclick = function(){
+  modal.style.display = "block";
+  modalImg.src = this.src;
+  modalImg.setAttribute('data-alt', this.alt); // Store alt text in a data attribute
+  captionText.innerHTML = this.alt;
 }
 
-// Set up click events for images
-img1.onclick = function() {
-    openModal(this, modal1, modalImg1, captionText1);
-}
-img2.onclick = function() {
-    openModal(this, modal2, modalImg2, captionText2);
-}
+// Add mouseleave event to the modal image
+modalImg.addEventListener('mouseleave', function() {
+  modal.style.backgroundColor = 'rgba(0, 34, 34, 0.25)'; // 25% opaque red
+});
 
-// Function to extract URL from caption
-function extractUrl(caption) {
-    const match = caption.match(/<a href="([^"]+)">/);
-    return match ? match[1] : null;
-}
+// Add mouseenter event to the modal image
+modalImg.addEventListener('mouseenter', function() {
+  modal.style.backgroundColor = 'rgba(0, 0, 0, 0.7)'; // Reset to default semi-transparent black
+});
 
-// Handle clicks on modal images
-modalImg1.onclick = function(event) {
-    event.stopPropagation();
-    const url = extractUrl(captionText1.innerHTML);
-    if (url) {
-        window.open(url, '_blank');
-    } else {
-        console.log("No URL found in caption");
-    }
-}
-
-modalImg2.onclick = function(event) {
-    event.stopPropagation();
-    const url = extractUrl(captionText2.innerHTML);
-    if (url) {
-        window.open(url, '_blank');
-    } else {
-        console.log("No URL found in caption");
-    }
-}
-
-// Get the <span> elements that close the modals
-var spans = document.getElementsByClassName("close");
-
-// Set up click events for close buttons
-for (var i = 0; i < spans.length; i++) {
-    spans[i].onclick = function(event) {
-        event.stopPropagation();
-        this.parentElement.style.display = "none";
-    }
-}
-
-// Close the modal when clicking outside of it
+// Reset modal background color when closed
 window.onclick = function(event) {
-    if (event.target == modal1) {
-        modal1.style.display = "none";
+  if (event.target == modal) {
+    modal.style.display = "none";
+    modal.style.backgroundColor = 'rgba(0, 0, 0, 0.7)'; // Reset to default semi-transparent black
+  }
+}
+
+// Get all images with class 'modal-image'
+var images = document.getElementsByClassName("modal-image");
+
+// Set up click event for all modal images
+for (var i = 0; i < images.length; i++) {
+    images[i].onclick = function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
     }
-    if (event.target == modal2) {
-        modal2.style.display = "none";
+}
+
+// Add this after the click event setup
+for (var i = 0; i < images.length; i++) {
+    images[i].onmouseover = function() {
+        this.style.opacity = "0.7";
+    }
+    images[i].onmouseout = function() {
+        this.style.opacity = "1";
+    }
+}
+
+// Get all images within the claims section
+var claimImages = document.querySelectorAll('#claims-section img');
+
+// Set up click event for all claim images
+claimImages.forEach(function(img) {
+    img.onclick = function(event){
+        event.preventDefault();
+        console.log('Image clicked:', this.alt); // Debug log
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        modalImg.setAttribute('data-alt', this.alt); // Store alt text in a data attribute
+        captionText.innerHTML = this.alt;
+    }
+});
+
+// Add click event to the modal image
+modalImg.onclick = function() {
+    console.log('Modal image clicked'); // Debug log
+    const altText = this.getAttribute('data-alt'); // Get alt text from data attribute
+    console.log('Alt text:', altText); // Debug log
+    const urlMatch = altText.match(/<a href='([^']+)'>/);
+    
+    if (urlMatch && urlMatch[1]) {
+        console.log('URL found:', urlMatch[1]); // Debug log
+        window.open(urlMatch[1], '_blank'); // Open extracted URL in new tab
+    } else {
+        console.log('No URL found in alt text'); // Debug log
     }
 }
