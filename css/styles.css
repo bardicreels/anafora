@@ -314,7 +314,9 @@ main {
     text-align: center;
     color: #ccc;
     padding: 10px 0;
-    height: 150px;
+    height: auto;
+    max-height: 100px; /* Limit the height of the caption box */
+    overflow-y: auto; /* Add scrollbar if content exceeds max-height */
   }
   
 

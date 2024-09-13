@@ -266,9 +266,9 @@ modalImg.addEventListener('mouseenter', function() {
   modal.style.backgroundColor = 'rgba(0, 0, 0, 0.7)'; // Reset to default semi-transparent black
 });
 
-// Reset modal background color when closed
+// Modify the window.onclick function
 window.onclick = function(event) {
-  if (event.target == modal) {
+  if (event.target == modal || event.target == captionText) {
     modal.style.display = "none";
     modal.style.backgroundColor = 'rgba(0, 0, 0, 0.7)'; // Reset to default semi-transparent black
   }
@@ -286,15 +286,7 @@ for (var i = 0; i < images.length; i++) {
     }
 }
 
-// Add this after the click event setup
-for (var i = 0; i < images.length; i++) {
-    images[i].onmouseover = function() {
-        this.style.opacity = "0.7";
-    }
-    images[i].onmouseout = function() {
-        this.style.opacity = "1";
-    }
-}
+
 
 // Get all images within the claims section
 var claimImages = document.querySelectorAll('#claims-section img');
