@@ -8,3 +8,4 @@ js/server.js
 test.html
 .vscode
 venv
+.prompts.md
