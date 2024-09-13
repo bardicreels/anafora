@@ -220,10 +220,15 @@ img2.onclick = function() {
     openModal(this, modal2, modalImg2, captionText2);
 }
 
-// Function to extract URL from caption
+// Function to extract URL from caption and decode HTML entities
 function extractUrl(caption) {
     const match = caption.match(/<a href="([^"]+)">/);
-    return match ? match[1] : null;
+    if (match) {
+        // Decode HTML entities in the URL
+        const decodedUrl = decodeURIComponent(match[1].replace(/&amp;/g, '&'));
+        return decodedUrl;
+    }
+    return null;
 }
 
 // Handle clicks on modal images
