@@ -27,6 +27,12 @@ function searchVTTContent(keyword) {
     }
     return results;
 }
+// Run the initialize function when the DOM is fully loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initialize);
+} else {
+    initialize();
+}
 
 
 function shakeElement(element) {
