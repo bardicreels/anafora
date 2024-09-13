@@ -12,20 +12,22 @@
         <img src="images/android-chrome-512x512.png" alt="Purple background" class="header-image rounded-image">
     </header>
     <main>
-        <div class="two-column-container">
-            <div class="column">
+        <div class="three-column-container">
+            <div class="column left-column">
+                <div id="vtt-list">
+                    <ul id="vtt-files"></ul>
+                </div>
+            </div>
+            <div class="column middle-column">
                 <div class="search-container">
                     <form id="search-form">
-                        <input type="text" id="search-input" placeholder="Enter search term">
+                        <input type="text" id="search-input" placeholder="Search video History">
                         <button type="submit">Search</button>
                     </form>
                 </div>
                 <div id="results"></div>
-                   <div id="vtt-list">
-                    <ul id="vtt-files"></ul>
-                </div>
             </div>
-            <div class="column">
+            <div class="column right-column">
                 <section id="chat-section">
                     <div class="iframe-container">
                         <iframe style="min-width: 100%; min-height: 100%; background: black;"
@@ -36,69 +38,19 @@
                         ></iframe>
                     </div>
                 </section>
-               
             </div>
         </div>
+        <div class="bottom-row">
+            <section id="claims-section" class="claims-section">
+                <!-- Claims content here -->
+            </section>
+        </div>
     </main>
-
-<div class="spacer"></div>
-     <section id="claims-section" class="claims-section">
-        <h2 id="claims-header">Claims</h2>
-        <ul class="claims-tree">
-            <li>
-               <Details open>
-                <summary>The Septuagint was translated into Hebrew from Greek</summary>
-                <ul>
-                   <ul>word </ul>
-                   <ul>Hebrew did not have the Technical language to describe the Greek words</ul>
-                      <ul>
-                        <img id="myImg1" src="images/Word_count_of_languages.jpg" alt="Word count of ancient languages <a href='https://www.youtube.com/live/Pyauv64SStY?feature=shared&t=390'>(youtube)</a>" style="width:100%;max-width:300px">
-                            <div id="myModal1" class="modal">
-                            <span class="close">&times;</span>
-                            <img class="modal-content" id="img01">
-                             <div id="caption1"></div>
-                            </div>
-                      </ul>
-                      <ul>Hebrew root words often originated from the Greek words</ul>
-                      <ul>
-                        <img id="myImg2" src="images/hebrew_root_words.jpg" alt="Hebrew root words bible.jpg <a href='https://www.youtube.com/live/Pyauv64SStY?feature=shared&t=2880'>(youtube)</a>" style="width:100%;max-width:300px">
-                            <div id="myModal2" class="modal">
-                            <span class="close">&times;</span>
-                            <img class="modal-content" id="img02">
-                             <div id="caption2"></div>
-                            </div>
-                      </ul>
-               
-                </ul>
-               </details>
-            </li>
-            <li>
-               <Details open>
-                <summary>Jesus Used Drugs and abused children</summary>
-                <ul>
-                </ul>
-               </details>
-            </li>
-            <li>
-                <Details open>
-                    <summary>Jesus was arrested in a public park with a naked kid, screaming "I am not a child trafficker"</summary>
-                    <ul>
-                    </ul>
-                   </details>
-            </li>
-        </ol>
-    </section>
-  
-
     
     <script src="js/script.js"></script>
     <div class="spacer"></div>
     <div align="center" class="x-link">
-        <a href="https://x.com/bardicreels" target="_blank" rel="noopener noreferrer">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932L18.901 1.153ZM17.61 20.644h2.039L6.486 3.24H4.298L17.61 20.644Z"/>
-          </svg>
-        </a>
+        <!-- X link content here -->
     </div>
 </body>
 </html>
