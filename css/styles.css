@@ -11,10 +11,11 @@ body {
     color: #2a2018;
 }
 
+
 /* header */
 
 header {
-    background-color: rgba(224, 208, 168, 0.95);
+    background-color: hwb(42 88% 3%);;
     backdrop-filter: blur(2px);
     box-shadow: 0 0 15px rgba(128, 0, 128, 0.1);
     padding: 20px;
@@ -28,6 +29,12 @@ header {
     position: relative;
     max-width: 400px;
 }
+
+ul {
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margins */
+  }
 
 .header-image {
     width: 100%;
@@ -179,18 +186,14 @@ main {
     min-width: 0; /* This allows flex items to shrink below their minimum content size */
 }
 
-.left-column,
-.middle-column,
-.right-column {
-    /* No specific styles needed here anymore */
-}
-
 #vtt-list {
     max-height: 80vh;
     overflow-y: auto;
 }
 
 .search-container {
+    position: relative;
+    padding-top: 40px; /* Increase this value to make room for the button */
     margin-bottom: 20px;
 }
 
@@ -204,9 +207,48 @@ main {
 }
 
 #search-form button {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
     padding: 5px 10px;
     margin-left: 5px;
 }
+
+.search-container input, .search-container button {
+    background-color: rgba(249, 243, 227, 0.95);
+    border: 1px solid rgba(128, 0, 128, 0.2);
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    font-family: 'Courier New', monospace; /* Change font to a monospace style */
+    font-size: 16px; /* Adjust font size as needed */
+    color: #4a0e4e; /* Dark purple color for text */
+}
+
+.search-container input::placeholder {
+    color: #8a4b8e; /* Lighter purple for placeholder text */
+}
+
+.search-container input:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(128, 0, 128, 0.3);
+    border-color: rgba(128, 0, 128, 0.4);
+}
+
+.search-container button {
+    background-color: rgba(210, 180, 140, 0.95);
+    color: #4a2500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.search-container button:hover {
+    background-color: rgba(128, 0, 128, 0.1);
+    color: #5d0076;
+}
+
 
 #results {
     max-height: 70vh;
@@ -375,7 +417,7 @@ main {
 
 
 #claims-section {
-    background-color: #f4e6c0;
+    background-color: #f7f0e0;
     border: 2px solid #d4c68f;
     border-radius: 5px;
     padding: 20px;
@@ -383,11 +425,7 @@ main {
     width: 100%;
     box-sizing: border-box;
     color: #5d0076;
-}
-
-#claims-section h2 {
-    color: #4a2500;
-    margin-top: 0;
+    
 }
 
 #claims-section ol {
@@ -403,4 +441,24 @@ main {
     align-items: center;
     background-color: rgba(210, 180, 140, 0.95);
     color: #4a2500;
+    margin-top: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.claims-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.claims-section > * {
+    max-width: 100%;
+    width: fit-content;
+}
+
+.claims-section button,
+.claims-section .interactive-element {
+    margin: 10px auto;
 }
